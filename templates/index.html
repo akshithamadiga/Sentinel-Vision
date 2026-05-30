@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Deepfake Detector</title>
+
+<style>
+body{
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
+
+.container{
+    background: rgba(255,255,255,0.1);
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    width:400px;
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(to right,#0072ff,#00c6ff);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+<h1>Deepfake Detector</h1>
+
+<form action="/predict" method="post" enctype="multipart/form-data">
+<input type="file" name="file" required>
+<br><br>
+<button type="submit">Detect</button>
+</form>
+
+</div>
+
+</body>
+</html>

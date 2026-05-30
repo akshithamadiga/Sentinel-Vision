@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Result</title>
+
+<style>
+body{
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#141e30,#243b55);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
+
+.container{
+    background: rgba(255,255,255,0.08);
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    width:420px;
+    backdrop-filter: blur(15px);
+    box-shadow:0 20px 40px rgba(0,0,0,0.4);
+}
+
+img{
+    width:220px;
+    border-radius:15px;
+    margin-top:15px;
+}
+
+.real{
+    color:#00ff9d;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.fake{
+    color:#ff4d4d;
+    font-size:22px;
+    font-weight:bold;
+}
+
+button{
+    margin-top:20px;
+    padding:10px 20px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(to right,#ff512f,#dd2476);
+    color:white;
+    cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Detection Result</h1>
+
+<img src="{{ image_path }}" alt="Uploaded Image">
+
+<p class="{{ 'real' if result=='Real' else 'fake' }}">
+    {{ result }}
+</p>
+
+<p>Confidence: {{ confidence|round(2) }}%</p>
+
+<a href="/">
+    <button>Try Another Image</button>
+</a>
+
+</div>
+
+</body>
+</html>
