@@ -1,13 +1,13 @@
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras.applications import Xception
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Dropout
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 import os
 
 # Settings
-IMG_SIZE = (224,224)
+IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
 EPOCHS = 12
 
@@ -43,44 +43,59 @@ val_data = train_gen.flow_from_directory(
 # Print class mapping
 print("Class indices:", train_data.class_indices)
 
-# Load MobileNetV2
-base_model = MobileNetV2(
+# Load XceptionNet with ImageNet pretrained weights
+base_model = Xception(
     weights="imagenet",
     include_top=False,
-    input_shape=(224,224,3)
+    input_shape=(224, 224, 3)
 )
 
-# Freeze base layers
+# Freeze XceptionNet layers
 for layer in base_model.layers:
     layer.trainable = False
 
-# Custom head
+# Custom classification head
 x = base_model.output
+
 x = GlobalAveragePooling2D()(x)
-x = Dense(128, activation="relu")(x)
-x = Dropout(0.5)(x)   # helps avoid overfitting
-output = Dense(1, activation="sigmoid")(x)
 
-model = Model(inputs=base_model.input, outputs=output)
+x = Dense(
+    128,
+    activation="relu"
+)(x)
 
-# Compile
+x = Dropout(0.5)(x)
+
+# Binary classification output
+output = Dense(
+    1,
+    activation="sigmoid"
+)(x)
+
+# Create final model
+model = Model(
+    inputs=base_model.input,
+    outputs=output
+)
+
+# Compile model
 model.compile(
     optimizer=Adam(learning_rate=0.0001),
     loss="binary_crossentropy",
     metrics=["accuracy"]
 )
 
-# Train
+# Train model
 history = model.fit(
     train_data,
     validation_data=val_data,
     epochs=EPOCHS
 )
 
-# Create model folder if not exists
+# Create model folder
 os.makedirs("model", exist_ok=True)
 
-# Save model
+# Save trained model
 model.save("model/deepfake_model.h5")
 
-print("✅ Model saved successfully!")
+print("✅ XceptionNet model saved successfully!")
